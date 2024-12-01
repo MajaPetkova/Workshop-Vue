@@ -1,13 +1,24 @@
 <script>
-import ComponentsStarter from './components/ComponentsStarter.vue';
+import AppFooter from './components/AppFooter.vue';
+import AppHeader from './components/AppHeader.vue';
+// import ComponentsStarter from './components/ComponentsStarter.vue';
+import Products from './pages/Products.vue';
 
 export default {
   components: {
-    ComponentsStarter,
+    AppHeader,
+    AppFooter,
+    // ComponentsStarter,
+    Products,
   },
 };
 </script>
 
 <template>
-  <ComponentsStarter />
+  <AppHeader />
+  <main>
+    <!-- <ComponentsStarter /> -->
+    <Products />
+  </main>
+  <AppFooter />
 </template>

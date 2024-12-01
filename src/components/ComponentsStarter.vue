@@ -459,12 +459,6 @@ main {
   padding: 1rem 2rem;
 }
 
-.categories {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-}
-
 .products {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
