@@ -1,24 +1,39 @@
 <script>
 import AppFooter from './components/AppFooter.vue';
 import AppHeader from './components/AppHeader.vue';
-// import ComponentsStarter from './components/ComponentsStarter.vue';
-import Products from './pages/Products.vue';
+import About from './pages/About.vue';
+import Cart from './pages/Cart.vue';
+import Contacts from './pages/Contacts.vue';
+import Home from './pages/Home.vue';
+import Products from './pages/products/Products.vue';
 
 export default {
   components: {
     AppHeader,
     AppFooter,
-    // ComponentsStarter,
     Products,
+    Home,
+    Cart,
+    Contacts,
+    About,
+  },
+  data() {
+    return {
+      page: 'Home',
+    };
+  },
+  methods: {
+    onSelect(newPage) {
+      this.page = newPage;
+    },
   },
 };
 </script>
 
 <template>
-  <AppHeader />
+  <AppHeader @select="onSelect" />
   <main>
-    <!-- <ComponentsStarter /> -->
-    <Products />
+    <component :is="page" />
   </main>
   <AppFooter />
 </template>

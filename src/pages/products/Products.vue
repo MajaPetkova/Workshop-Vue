@@ -1,7 +1,7 @@
 <script>
-import { products } from '../constants/products';
-import Categories from './products/components/Categories.vue';
-import ProductCard from './products/components/ProductCard.vue';
+import { products } from '../../constants/products';
+import Categories from './components/Categories.vue';
+import ProductCard from './components/ProductCard.vue';
 
 export default {
   components: {
