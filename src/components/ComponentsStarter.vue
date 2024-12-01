@@ -459,12 +459,6 @@ main {
   padding: 1rem 2rem;
 }
 
-.products {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1rem;
-}
-
 .footer {
   padding: 3em;
   background-color: #364954;
