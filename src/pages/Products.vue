@@ -10,18 +10,29 @@ export default {
   },
   data() {
     return {
-      products,
+
+      activeCategory: '',
     };
+  },
+  computed: {
+    visibleProducts() {
+      return this.activeCategory === '' ? products : products.filter(x => x.category === this.activeCategory);
+    },
+  },
+  methods: {
+    onSelect(value) {
+      this.activeCategory = this.activeCategory === value ? '' : value;
+    },
   },
 };
 </script>
 
 <template>
   <div>
-    <Categories />
+    <Categories :active="activeCategory" @select="onSelect" />
   </div>
   <div class="products">
-    <ProductCard v-for="prod in products" :key="prod.title" :product="prod" />
+    <ProductCard v-for="prod in visibleProducts" :key="prod.title + prod.id" :product="prod" />
   </div>
 </template>
 

@@ -2,25 +2,26 @@
 import { categories } from '../../../constants/categories';
 
 export default {
+  props: {
+    active: {
+      type: String,
+      required: true,
+    },
+  },
+  emits: ['select'],
   data() {
     return {
       categories,
-      activeValue: '',
-
     };
   },
-  methods: {
-    onSelect(value) {
-      this.activeValue = this.activeValue === value ? '' : value;
-    },
-  },
+
 };
 </script>
 
 <template>
   <ul role="list" class="categories">
     <li v-for="category in categories" :key="`category-btn-${category.value}`">
-      <button :class="[category.value === activeValue ? 'primary' : 'secondary outline']" @click="onSelect(category.value)">
+      <button :class="[category.value === active ? 'primary' : 'secondary outline']" @click="$emit('select', category.value)">
         {{ category.name }}
       </button>
     </li>
