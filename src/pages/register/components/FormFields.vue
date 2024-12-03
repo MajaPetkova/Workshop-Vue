@@ -29,4 +29,7 @@ span{
 color: red;
     }
 }
+fieldset, label{
+  margin:0
+  }
 </style>
