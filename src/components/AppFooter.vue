@@ -109,6 +109,37 @@
 </template>
 
 <style scoped>
+.footer {
+  padding: 3em;
+  background-color: #364954;
+  color: white;
+}
+
+.footer * {
+  color: white;
+}
+
+.footer .columns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(50px, 1fr));
+  gap: 2rem;
+}
+
+.footer .section-header {
+  border-bottom: 3px solid var(--pico-primary);
+  margin: 1rem;
+  color: white;
+}
+
+.footer span {
+  background: var(--pico-primary);
+  color: white;
+  font-size: 26px;
+  border-radius: 6px 6px 0 0;
+  padding: 3px 17px;
+  margin: auto;
+}
+
 .footer section {
   width: 100%;
   margin: 0.5em auto;
