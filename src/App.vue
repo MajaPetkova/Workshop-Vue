@@ -6,6 +6,7 @@ import Cart from './pages/Cart.vue';
 import Contacts from './pages/Contacts.vue';
 import Home from './pages/Home.vue';
 import Products from './pages/products/Products.vue';
+import Register from './pages/register/components/Register.vue';
 
 export default {
   components: {
@@ -16,6 +17,7 @@ export default {
     Cart,
     Contacts,
     About,
+    Register,
   },
   data() {
     return {
