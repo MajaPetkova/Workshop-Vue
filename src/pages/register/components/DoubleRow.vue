@@ -21,6 +21,7 @@ export default {
 div {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: v-bind(gap)
+    gap: v-bind(gap);
+
 }
 </style>
