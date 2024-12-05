@@ -21,7 +21,7 @@ export default {
   },
   data() {
     return {
-      page: 'Home',
+      page: 'Register',
     };
   },
   methods: {
