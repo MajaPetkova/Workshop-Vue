@@ -4,12 +4,11 @@ const ENDPOINT = 'products';
 
 export async function getAllProducts() {
   try {
-    const res = await axiosDJ.get(`/${ENDPOINT}`);
-    console.log(res);
-    return res.data;
+    const response = await axiosDJ.get(`/${ENDPOINT}`);
+    return response.data.products;
   }
   catch (err) {
-    console.err('Ooops unexpected', err);
+    console.error('Ooops unexpected', err);
     return [];
   }
 }

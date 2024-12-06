@@ -1,5 +1,7 @@
 <script>
-import { products } from '../../constants/products';
+// import { products } from '../../constants/products';
+
+import { getAllProducts } from '../../services/products';
 import Categories from './components/Categories.vue';
 import ProductCard from './components/ProductCard.vue';
 
@@ -10,14 +12,19 @@ export default {
   },
   data() {
     return {
-
       activeCategory: '',
+      isLoading: true,
+      products: [],
     };
   },
   computed: {
     visibleProducts() {
-      return this.activeCategory === '' ? products : products.filter(x => x.category === this.activeCategory);
+      return this.activeCategory === '' ? this.products : this.products.filter(x => x.category === this.activeCategory);
     },
+  },
+  async created() {
+    this.products = await getAllProducts();
+    this.isLoading = false;
   },
   methods: {
     onSelect(value) {
@@ -31,7 +38,8 @@ export default {
   <div>
     <Categories :active="activeCategory" @select="onSelect" />
   </div>
-  <div class="products">
+  <progress v-if="isLoading" />
+  <div v-else-if="visibleProducts.length > 0" class="products">
     <ProductCard v-for="prod in visibleProducts" :key="prod.title + prod.id" :product="prod" />
   </div>
 </template>
