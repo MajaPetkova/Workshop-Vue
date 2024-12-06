@@ -15,7 +15,8 @@
     "@vuelidate/validators": "^2.0.4",
     "axios": "^1.7.9",
     "vue": "^3.5.12",
-    "vue-picocss": "^0.2.7"
+    "vue-picocss": "^0.2.7",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.8.0",
