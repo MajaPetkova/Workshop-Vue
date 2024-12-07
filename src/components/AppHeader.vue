@@ -3,27 +3,27 @@ export default {
   data() {
     return {
       links: [{
-        path: '/',
-        name: 'Home',
+        label: 'Home',
+        name: 'home',
       }, {
-        path: '/about',
-        name: 'About',
+        label: 'About',
+        name: 'about',
       }, {
-        path: '/products',
-        name: 'Products',
+        label: 'Products',
+        name: 'products',
       }, {
-        path: '/register',
-        name: 'Register',
+        name: 'register',
+        label: 'Register',
       }, {
-        path: '/contacts',
-        name: 'Contacts',
+        label: 'Contacts',
+        name: 'contacts',
       }],
 
     };
   },
   methods: {
     onCartClick() {
-      this.$router.push({ path: '/cart' });
+      this.$router.push({ name: 'cart' });
     },
   },
 };
@@ -42,8 +42,8 @@ export default {
       </ul>
       <ul>
         <li v-for="link in links" :key="link.path">
-          <router-link :to="{ path: link.path }">
-            {{ link.name }}
+          <router-link :to="{ name: link.name }">
+            {{ link.label }}
           </router-link>
         </li>
 
