@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import About from '../pages/About.vue';
 import Cart from '../pages/Cart.vue';
 import Contacts from '../pages/Contacts.vue';
+import Favorites from '../pages/Favorites.vue';
 import Home from '../pages/Home.vue';
 import SingleProduct from '../pages/products/components/SingleProduct.vue';
 import Products from '../pages/products/Products.vue';
@@ -31,7 +32,11 @@ const routes = [{
   path: '/cart',
   name: 'cart',
   component: Cart,
-}, { path: '/product/:id', name: 'singleProduct', component: SingleProduct }];
+}, { path: '/product/:id', name: 'singleProduct', component: SingleProduct }, {
+  path: '/favorites',
+  name: 'favorites',
+  component: Favorites,
+}];
 
 const router = createRouter({
   history: createWebHistory(),

@@ -1,17 +1,14 @@
 import { defineStore } from 'pinia';
+import { getProductsByIds } from '../services/products';
 
 export const useFavoritesStore = defineStore('favoritesStore', {
 
   state: () => ({
-    favorites: new Set([]),
+    favorites: new Set([1, 2, 6]),
+    products: [],
+    isLoading: false,
   }),
   actions: {
-    // addFavorites(id) {
-    //   this.favorites.add(id);
-    // },
-    // removeFavorite(id) {
-    //   this.favorites.delete(id);
-    // },
     isFavorite(id) {
       return this.favorites.has(id);
     },
@@ -23,6 +20,12 @@ export const useFavoritesStore = defineStore('favoritesStore', {
       else {
         this.favorites.add(id);
       }
+    },
+    async loadFavorites() {
+      this.isLoading = true;
+      const response = await getProductsByIds(Array.from(this.favorites));
+      this.products = response;
+      this.isLoading = false;
     },
   },
 });

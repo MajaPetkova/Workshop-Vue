@@ -17,7 +17,7 @@ export default {
       }, {
         label: 'Contacts',
         name: 'contacts',
-      }],
+      }, { label: 'Favorites', name: 'favorites' }],
 
     };
   },
