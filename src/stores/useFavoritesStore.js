@@ -4,10 +4,13 @@ import { getProductsByIds } from '../services/products';
 export const useFavoritesStore = defineStore('favoritesStore', {
 
   state: () => ({
-    favorites: new Set([1, 2, 6]),
+    favorites: new Set([]),
     products: [],
     isLoading: false,
   }),
+  getters: {
+    favoritesProducts: state => state.products.filter(x => state.favorites.has(x.id)),
+  },
   actions: {
     isFavorite(id) {
       return this.favorites.has(id);
@@ -26,6 +29,9 @@ export const useFavoritesStore = defineStore('favoritesStore', {
       const response = await getProductsByIds(Array.from(this.favorites));
       this.products = response;
       this.isLoading = false;
+    },
+    resetProducts() {
+      this.products = [];
     },
   },
 });

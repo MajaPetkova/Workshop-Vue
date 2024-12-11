@@ -9,21 +9,21 @@ export default {
   setup() {
     return { favoritesStore: useFavoritesStore() };
   },
-  computed: {
 
-  },
   async created() {
     await this.favoritesStore.loadFavorites();
     // this.isLoading = false;
   },
-
+  unmounted() {
+    this.favoritesStore.resetProducts();
+  },
 };
 </script>
 
 <template>
   <progress v-if="favoritesStore.isLoading" />
-  <div v-else-if="favoritesStore.products.length > 0" class="products">
-    <ProductCard v-for="prod in favoritesStore.products" :key="prod.title + prod.id" :product="prod" />
+  <div v-else-if="favoritesStore.favoritesProducts.length > 0" class="products">
+    <ProductCard v-for="prod in favoritesStore.favoritesProducts" :key="prod.title + prod.id" :product="prod" />
   </div>
 </template>
 
