@@ -4,6 +4,7 @@ import Cart from '../pages/Cart.vue';
 import Contacts from '../pages/Contacts.vue';
 import Favorites from '../pages/Favorites.vue';
 import Home from '../pages/Home.vue';
+import Login from '../pages/login/Login.vue';
 import SingleProduct from '../pages/products/components/SingleProduct.vue';
 import Products from '../pages/products/Products.vue';
 import Register from '../pages/register/components/Register.vue';
@@ -32,10 +33,18 @@ const routes = [{
   path: '/cart',
   name: 'cart',
   component: Cart,
+}, {
+  path: '/login',
+  name: 'login',
+  component: Login,
 }, { path: '/product/:id', name: 'singleProduct', component: SingleProduct }, {
   path: '/favorites',
   name: 'favorites',
+
   component: Favorites,
+  beforeEnter: (to, from) => {
+    console.log('Going to Fav', to, from);
+  },
 }];
 
 const router = createRouter({
@@ -43,4 +52,7 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, from) => {
+  console.log('before the routing', to, from);
+});
 export default router;
