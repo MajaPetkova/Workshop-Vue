@@ -1,6 +1,7 @@
 <script>
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
+import { loginUser } from '../../services/auth';
 import FormFields from '../register/components/FormFields.vue';
 
 export default {
@@ -13,8 +14,8 @@ export default {
   data() {
     return {
       form: {
-        username: '',
-        password: '',
+        username: 'emilys',
+        password: 'emilyspass',
       },
     };
   },
@@ -31,14 +32,15 @@ export default {
       const isValid = await this.v$.$validate();
       if (!isValid)
         return;
-      console.log(this.form);
+      await loginUser(this.form);
+    //   console.log(this.form);
     },
   },
 };
 </script>
 
 <template>
-  <div>
+  <div class="formContainer">
     <article>
       <form @submit.prevent="onLogin">
         <FormFields title="Username" :errors="v$.form.username.$errors">
@@ -54,3 +56,16 @@ export default {
     </article>
   </div>
 </template>
+
+<style scoped>
+.formContainer{
+padding: 1rem;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.formContainer article{
+max-width: 640px;
+width: 100%;
+}
+</style>
