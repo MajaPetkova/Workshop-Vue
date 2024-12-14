@@ -12,3 +12,18 @@ export async function loginUser({ username, password }, expiresInMins = 30) {
     return null;
   }
 }
+
+export async function getCurrentUser(accessToken) {
+  try {
+    const res = await axiosDJ.get(`/${ENDPOINT}/me`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return res.data;
+  }
+  catch (err) {
+    console.error('Oops something went wrong', err);
+    return null;
+  }
+}

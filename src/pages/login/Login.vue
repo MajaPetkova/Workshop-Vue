@@ -1,7 +1,8 @@
 <script>
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
-import { loginUser } from '../../services/auth';
+// import { loginUser } from '../../services/auth';
+import { useUserStore } from '../../stores/useUserStore';
 import FormFields from '../register/components/FormFields.vue';
 
 export default {
@@ -9,7 +10,7 @@ export default {
     FormFields,
   },
   setup() {
-    return { v$: useVuelidate() };
+    return { v$: useVuelidate(), userStore: useUserStore() };
   },
   data() {
     return {
@@ -32,8 +33,11 @@ export default {
       const isValid = await this.v$.$validate();
       if (!isValid)
         return;
-      await loginUser(this.form);
+      await this.userStore.loginUser(this.form);
     //   console.log(this.form);
+    },
+    mounted() {
+      this.userStore.reAuthUser(this.form);
     },
   },
 };
