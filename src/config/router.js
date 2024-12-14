@@ -8,6 +8,7 @@ import Login from '../pages/login/Login.vue';
 import SingleProduct from '../pages/products/components/SingleProduct.vue';
 import Products from '../pages/products/Products.vue';
 import Register from '../pages/register/components/Register.vue';
+import { useUserStore } from '../stores/useUserStore';
 
 const routes = [{
   path: '/',
@@ -37,13 +38,30 @@ const routes = [{
   path: '/login',
   name: 'login',
   component: Login,
+  beforeEnter: async () => {
+    const store = useUserStore();
+    if (store.user) {
+      return false;
+    }
+
+    const isLogged = await store.reAuthUser();
+    if (isLogged) {
+      return false;
+    }
+  },
 }, { path: '/product/:id', name: 'singleProduct', component: SingleProduct }, {
   path: '/favorites',
   name: 'favorites',
 
   component: Favorites,
-  beforeEnter: (to, from) => {
-    console.log('Going to Fav', to, from);
+  beforeEnter: async () => {
+    const store = useUserStore();
+    if (!store.user) {
+      const isLogged = await store.reAuthUser();
+      if (!isLogged) {
+        return { name: 'login' };
+      }
+    }
   },
 }];
 
@@ -52,7 +70,7 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to, from) => {
-  console.log('before the routing', to, from);
-});
+// router.beforeEach((to, from) => {
+//   console.log('before the routing', to, from);
+// });
 export default router;

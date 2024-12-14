@@ -11,6 +11,9 @@ export const useUserStore = defineStore('userStore', {
       user: null,
     };
   },
+  getters: {
+    isUserLogged: state => !!state.user?.username,
+  },
   actions: {
     async  loginUser(loginData) {
       const profile = await loginUser(loginData, LOGIN_EXPIRATION_MIN);
@@ -22,16 +25,18 @@ export const useUserStore = defineStore('userStore', {
     },
     async reAuthUser() {
       if (this.user)
-        return;
+        return false;
 
       const persistedUserToken = getCookie(COOKIE_NAME);
       if (!persistedUserToken)
-        return;
+        return false;
 
       const profile = await getCurrentUser(persistedUserToken);
       if (profile) {
         this.user = profile;
+        return true;
       }
+      return false;
     },
   },
 });

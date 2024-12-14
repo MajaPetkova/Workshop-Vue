@@ -1,5 +1,12 @@
 <script>
+import { useUserStore } from '../stores/useUserStore';
+
 export default {
+  setup() {
+    return {
+      userStore: useUserStore(),
+    };
+  },
   data() {
     return {
       links: [{
@@ -20,6 +27,12 @@ export default {
       }, { label: 'Favorites', name: 'favorites' }, { label: 'Login', name: 'login' }],
 
     };
+  },
+  computed: {
+    userName() { return this.userStore.user?.username ?? ''; },
+  },
+  async created() {
+    await this.userStore.reAuthUser();
   },
   methods: {
     onCartClick() {
@@ -49,6 +62,9 @@ export default {
 
         <button type="button" class="primary" @click="onCartClick">
           Cart
+        </button>
+        <button type="button" class="outline">
+          {{ userName }}
         </button>
       </ul>
     </nav>
