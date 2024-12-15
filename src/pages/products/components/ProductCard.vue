@@ -1,4 +1,5 @@
 <script>
+import { useCardStore } from '../../../stores/useCartStore';
 import { useFavoritesStore } from '../../../stores/useFavoritesStore';
 import { useUserStore } from '../../../stores/useUserStore';
 
@@ -10,7 +11,7 @@ export default {
     },
   },
   setup() {
-    return { favoriteStore: useFavoritesStore (), userStore: useUserStore() };
+    return { favoriteStore: useFavoritesStore (), userStore: useUserStore(), cardStore: useCardStore() };
   },
   computed: {
     isFavorite() {
@@ -29,7 +30,7 @@ export default {
     </p>
     <p><b>Price</b>: {{ product.price }}$</p>
     <footer>
-      <button class="secondary outline" type="button">
+      <button class="secondary outline" type="button" @click="cardStore.addToCard(product)">
         Add to cart 🛒
       </button>
       <button v-if="userStore.isUserLogged" type="button" class="contrast" :class="isFavorite ? '' : 'outline'" @click="favoriteStore.toggleFavorite(product.id)">

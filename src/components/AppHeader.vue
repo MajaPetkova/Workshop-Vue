@@ -1,10 +1,12 @@
 <script>
+import { useCardStore } from '../stores/useCartStore';
 import { useUserStore } from '../stores/useUserStore';
 
 export default {
   setup() {
     return {
       userStore: useUserStore(),
+      cardStore: useCardStore(),
     };
   },
   data() {
@@ -30,6 +32,7 @@ export default {
   },
   computed: {
     userName() { return this.userStore.user?.username ?? ''; },
+    cartLength() { return this.cardStore.products.size; },
   },
   async created() {
     await this.userStore.reAuthUser();
@@ -61,7 +64,7 @@ export default {
         </li>
 
         <button type="button" class="primary" @click="onCartClick">
-          Cart
+          Cart <span v-if="cartLength">{{ cartLength }}</span>
         </button>
         <button type="button" class="outline">
           {{ userName }}
