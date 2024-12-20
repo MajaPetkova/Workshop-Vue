@@ -1,9 +1,29 @@
 <script>
+import { useCardStore } from '../../stores/useCartStore';
+
 export default {
   props: {
     product: {
       required: true,
       type: Object,
+    },
+  },
+  emits: ['delete'],
+  setup() {
+    return { cartStore: useCardStore() };
+  },
+  computed: {
+    quantity() {
+      return this.cartStore.products.get(this.product.id).quantity;
+    },
+    totalPrice() {
+      const number = this.quantity * this.product.price;
+      return Math.round((number + Number.EPSILON) * 100) / 100;
+    },
+  },
+  methods: {
+    onQuantityChange(e) {
+      this.cartStore.changeQuantity(this.product.id, Number.parseInt(e.target.value, 10));
     },
   },
 };
@@ -28,12 +48,14 @@ export default {
       </p>
     </td>
     <td>
-      <input type="number" value="2" style="width: 5rem;">
+      <input type="number" min="0" :value="quantity" style="width: 5rem;" @change="onQuantityChange">
     </td>
     <td class="price">
-      $70
+      ${{ totalPrice }}
     </td>    <td class="price">
-      <button type="button" class="secondary outline">
+      <button
+        type="button" class="secondary outline" @click="$emit('delete')"
+      >
         Remove 🗑️
       </button>
     </td>

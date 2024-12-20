@@ -20,22 +20,17 @@ export const useCardStore = defineStore('cartStore', {
           quantity: 1,
         });
       }
-      console.log(this.products);
     },
-    changeQuantity(productId, type) {
+    changeQuantity(productId, newQuantity) {
       const prod = this.products.get(productId);
       if (!prod)
         return;
-      if (type === 'increment') {
-        prod.quantity += 1;
+      if (newQuantity > 0) {
+        prod.quantity = newQuantity;
       }
+
       else {
-        if (prod.quantity > 1) {
-          prod.quantity -= 1;
-        }
-        else {
-          this.removeFromCard(productId);
-        }
+        this.removeFromCard(productId);
       }
     },
     removeFromCard(productId) {
