@@ -29,7 +29,7 @@ const userName = computed (() => userStore.user?.username ?? '');
 const cartLength = computed (() => cartStore.products.size);
 
 // onMounted(async () => {
-userStore.reAuthUser();
+await userStore.reAuthUser();
 // });
 
 function onCartClick() {

@@ -11,7 +11,12 @@ export default {
 </script>
 
 <template>
-  <AppHeader />
+  <Suspense>
+    <AppHeader />
+    <template #fallback>
+      <h2>Loading...</h2>
+    </template>
+  </Suspense>
   <main>
     <!-- <component :is="page" /> -->
     <router-view />
