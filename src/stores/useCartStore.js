@@ -1,40 +1,45 @@
 import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-export const useCardStore = defineStore('cartStore', {
-  state() {
-    return {
-      products: new Map(),
-    };
-  },
-  actions: {
-    addToCard(product) {
-      if (this.products.has(product.id)) {
-        const prod = this.products.get(product.id);
-        if (prod) {
-          prod.quantity += 1;
-        }
-      }
-      else {
-        this.products.set(product.id, {
-          id: product.id,
-          quantity: 1,
-        });
-      }
-    },
-    changeQuantity(productId, newQuantity) {
-      const prod = this.products.get(productId);
-      if (!prod)
-        return;
-      if (newQuantity > 0) {
-        prod.quantity = newQuantity;
-      }
+export const useCardStore = defineStore('cartStore', () => {
+  const products = ref(new Map());
 
-      else {
-        this.removeFromCard(productId);
+  function addToCard(product) {
+    if (products.value.has(product.id)) {
+      const prod = products.value.get(product.id);
+      if (prod) {
+        prod.quantity += 1;
       }
-    },
-    removeFromCard(productId) {
-      this.products.delete(productId);
-    },
-  },
+    }
+    else {
+      products.value.set(product.id, {
+        id: product.id,
+        quantity: 1,
+      });
+    }
+  }
+
+  function changeQuantity(productId, newQuantity) {
+    const prod = products.value.get(productId);
+    if (!prod)
+      return;
+    if (newQuantity > 0) {
+      prod.quantity = newQuantity;
+    }
+
+    else {
+      removeFromCard(productId);
+    }
+  }
+
+  function removeFromCard(productId) {
+    products.value.delete(productId);
+  }
+
+  return {
+    products,
+    addToCard,
+    changeQuantity,
+    removeFromCard,
+  };
 });
