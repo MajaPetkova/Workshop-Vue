@@ -1,8 +1,20 @@
-<script>
+<script setup>
 import useVuelidate from '@vuelidate/core';
 import { alphaNum, email, helpers, maxLength, minLength, numeric, required, sameAs } from '@vuelidate/validators';
+import { computed, ref, watch } from 'vue';
 import DoubleRow from './DoubleRow.vue';
 import FormFields from './FormFields.vue';
+
+//   const age = new Date(new Date() - new Date(value)).getUTCFullYear();
+
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true,
+  },
+});
+
+const emit = defineEmits(['next']);
 
 const separateNames = helpers.regex(/^[A-Z][a-z]+ [A-Z][a-z]+$/);
 
@@ -16,86 +28,63 @@ function minimalAge(minAge) {
   );
 }
 
-//   const age = new Date(new Date() - new Date(value)).getUTCFullYear();
+const formData = ref({
+  name: '',
+  password: '',
+  confirmPassword: '',
+  email: '',
+  phone: '',
+  gender: '',
+  dateOfBirth: '',
 
-export default {
-  components: {
-    FormFields,
-    DoubleRow,
-  },
-  props: {
-    data: {
-      type: Object,
-      required: true,
-    },
-  },
-  emits: ['next'],
-  setup() {
-    return {
-      v$: useVuelidate(),
-    };
-  },
-  data() {
-    return {
-      formData: {
-        name: '',
-        password: '',
-        confirmPassword: '',
-        email: '',
-        phone: '',
-        gender: '',
-        dateOfBirth: '',
+});
 
+const rules = computed(() => {
+  return {
+    formData: {
+      name: { required, separateNames: helpers.withMessage('Field must contain 2 names separate with white space and start with capital letter', separateNames) },
+      password: { required, minLength: minLength(3), maxLength: maxLength(16), alphaNum },
+      confirmPassword: {
+        sameAsPassword: sameAs(formData.value.password),
       },
-    };
-  },
-  validations() {
-    return {
-      formData: {
-        name: { required, separateNames: helpers.withMessage('Field must contain 2 names separate with white space and start with capital letter', separateNames) },
-        password: { required, minLength: minLength(3), maxLength: maxLength(16), alphaNum },
-        confirmPassword: {
-          sameAsPassword: sameAs(this.formData.password),
-        },
-        email: { required, email },
-        phone: { required, numeric, minLength: minLength(9), maxLength: maxLength(9) },
-        gender: { required },
-        dateOfBirth: { required, minimalAge: helpers.withMessage(({ $params }) => `You must be ${$params.minAge}+ years old`, minimalAge(13)) },
-      },
-    };
-  },
-  watch: {
-    data: {
-      handler(newVal, oldVal) {
-        const areSame = oldVal && JSON.stringify(Object.entries(newVal).sort()) === JSON.stringify(Object.entries(oldVal).sort());
-        if (!areSame) {
-          this.initState(newVal);
-        }
-      },
-      deep: true,
-      immediate: true,
+      email: { required, email },
+      phone: { required, numeric, minLength: minLength(9), maxLength: maxLength(9) },
+      gender: { required },
+      dateOfBirth: { required, minimalAge: helpers.withMessage(({ $params }) => `You must be ${$params.minAge}+ years old`, minimalAge(13)) },
     },
+  };
+});
+
+const v$ = useVuelidate(rules, { formData });
+
+watch(
+  () => props.data,
+  (newVal, oldVal) => {
+    const areSame = oldVal && JSON.stringify(Object.entries(newVal).sort()) === JSON.stringify(Object.entries(oldVal).sort());
+    if (!areSame) {
+      initState(newVal);
+    }
   },
-  methods: {
-    async onSubmit() {
-      const isValid = await this.v$.$validate();
-      if (isValid) {
-        this.$emit('next', this.formData);
-      }
-    },
-    initState(dataPropValue) {
-      this.formData = {
-        name: dataPropValue.name,
-        password: dataPropValue.password,
-        confirmPassword: dataPropValue.confirmPassword,
-        email: dataPropValue.email,
-        phone: dataPropValue.phone,
-        gender: dataPropValue.gender,
-        dateOfBirth: dataPropValue.dateOfBirth,
-      };
-    },
-  },
-};
+  { deep: true, immediate: true },
+);
+
+async function onSubmit() {
+  const isValid = await v$.value.$validate();
+  if (isValid) {
+    emit('next', formData.value);
+  }
+}
+function initState(dataPropValue) {
+  formData.value = {
+    name: dataPropValue.name,
+    password: dataPropValue.password,
+    confirmPassword: dataPropValue.confirmPassword,
+    email: dataPropValue.email,
+    phone: dataPropValue.phone,
+    gender: dataPropValue.gender,
+    dateOfBirth: dataPropValue.dateOfBirth,
+  };
+}
 </script>
 
 <template>

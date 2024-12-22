@@ -34,7 +34,7 @@ export const useFavoritesStore = defineStore('favoritesStore', () => {
     products.value = [];
   }
 
-  return { favoritesProducts, isFavorite, loadFavorites, resetProducts, toggleFavorite };
+  return { favoritesProducts, isFavorite, loadFavorites, resetProducts, toggleFavorite, isLoading };
 });
 
 // export const useFavoritesStore = defineStore('favoritesStore', {
