@@ -14,6 +14,9 @@ const props = defineProps({
   },
 });
 
+// destructuring props
+// const { data } = toRefs(props);
+
 const emit = defineEmits(['next']);
 
 const separateNames = helpers.regex(/^[A-Z][a-z]+ [A-Z][a-z]+$/);

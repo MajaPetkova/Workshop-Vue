@@ -1,85 +1,75 @@
-<script>
+<script setup>
 import useVuelidate from '@vuelidate/core';
 import { minLength, required } from '@vuelidate/validators';
+import { computed, ref, watch } from 'vue';
 import DoubleRow from './DoubleRow.vue';
 import FormFields from './FormFields.vue';
 // import DoubleRow from './DoubleRow.vue';
 
-export default {
-  components: {
-    FormFields,
-    DoubleRow,
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true,
   },
-  props: {
-    data: {
-      type: Object,
-      required: true,
+});
+
+const emit = defineEmits(['previous', 'submit']);
+
+const formData = ref({
+  address1: '',
+  address2: '',
+  city: '',
+  zip: null,
+  country: '',
+  payment: '',
+  note: '',
+});
+
+const rules = computed(() => {
+  return {
+    formData: {
+      address1: { required, minLength: minLength(5) },
+      address2: '',
+      city: '',
+      zip: '',
+      country: '',
+      payment: '',
+      note: '',
     },
+  };
+});
+const v$ = useVuelidate(rules, { formData });
+
+// destructuring props
+// const { data } = toRefs(props);
+watch(
+  () => props.data,
+  (newVal, oldVal) => {
+    const areSame = oldVal && JSON.stringify(Object.entries(newVal).sort()) === JSON.stringify(Object.entries(oldVal).sort());
+    if (!areSame) {
+      initState(newVal);
+    }
   },
-  emits: ['previous', 'submit'],
-  setup() {
-    return {
-      v$: useVuelidate(),
-    };
-  },
-  data() {
-    return {
-      formData: {
-        address1: '',
-        address2: '',
-        city: '',
-        zip: null,
-        country: '',
-        payment: '',
-        note: '',
-      },
-    };
-  },
-  validations() {
-    return {
-      formData: {
-        address1: { required, minLength: minLength(5) },
-        address2: '',
-        city: '',
-        zip: '',
-        country: '',
-        payment: '',
-        note: '',
-      },
-    };
-  },
-  watch: {
-    data: {
-      handler(newVal, oldVal) {
-        const areSame = oldVal && JSON.stringify(Object.entries(newVal).sort()) === JSON.stringify(Object.entries(oldVal).sort());
-        if (!areSame) {
-          this.initState(newVal);
-        }
-      },
-      deep: true,
-      immediate: true,
-    },
-  },
-  methods: {
-    async onSubmit() {
-      const isValid = await this.v$.$validate();
-      if (isValid) {
-        this.$emit('submit', this.formData);
-      }
-    },
-    initState(dataPropValue) {
-      this.formData = {
-        address1: dataPropValue.address1,
-        address2: dataPropValue.address2,
-        city: dataPropValue.city,
-        zip: dataPropValue.zip,
-        country: dataPropValue.country,
-        payment: dataPropValue.payment,
-        note: dataPropValue.note,
-      };
-    },
-  },
-};
+  { deep: true, immediate: true },
+);
+
+async function onSubmit() {
+  const isValid = await v$.value.$validate();
+  if (isValid) {
+    emit('submit', formData.value);
+  }
+}
+function initState(dataPropValue) {
+  formData.value = {
+    address1: dataPropValue.address1,
+    address2: dataPropValue.address2,
+    city: dataPropValue.city,
+    zip: dataPropValue.zip,
+    country: dataPropValue.country,
+    payment: dataPropValue.payment,
+    note: dataPropValue.note,
+  };
+}
 </script>
 
 <template>
